@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { ModeToggle } from "@/components/ui/toggle-mode";
+import Link from "next/link";
 
 export default function Home() {
 	const user = useSession();
@@ -10,9 +11,10 @@ export default function Home() {
 			<div>
 				<ModeToggle></ModeToggle>
 			</div>
+			<Button>
+				<Link href={"/login"}>Login</Link>
+			</Button>
 			<div>{JSON.stringify(user)}</div>
-			<Button onClick={() => signIn()}>SignIn </Button>
-			<Button onClick={() => signOut()}>SignOut </Button>
 		</div>
 	);
 }

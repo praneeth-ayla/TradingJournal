@@ -10,12 +10,13 @@ import {
 } from "@/components/ui/card";
 import ToS from "@/components/ToS";
 import Pp from "@/components/Pp";
-import { useSession, signIn } from "next-auth/react";
+import { signIn } from "next-auth/react";
 
 export default function DemoCreateAccount() {
 	async function handleSignIn(type: string) {
-		const res = await signIn(type);
+		await signIn(type);
 	}
+
 	return (
 		<div className="flex items-center justify-center h-screen">
 			<Card>

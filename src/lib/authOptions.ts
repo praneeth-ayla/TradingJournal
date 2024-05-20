@@ -24,7 +24,7 @@ export const authOptions: NextAuthOptions = {
 	],
 	callbacks: {
 		async session({ session }) {
-			// Adding the user id to the session to access in client side
+			// Adding the user id, name and image from db to the session to access in client side
 			if (session.user?.email) {
 				const sessionUser = await db.user.findFirst({
 					where: {
@@ -33,8 +33,12 @@ export const authOptions: NextAuthOptions = {
 				});
 				return {
 					...session,
-					id: sessionUser?.id,
-					image: sessionUser?.image,
+					user: {
+						...session.user,
+						name: sessionUser?.name,
+						id: sessionUser?.id,
+						image: sessionUser?.image,
+					},
 				};
 			}
 			return session;

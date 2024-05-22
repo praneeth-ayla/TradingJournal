@@ -12,12 +12,16 @@ import { uploadFiles } from "@/lib/uploadthing";
 interface EditorProps {
 	initialContent?: string;
 	editable?: boolean;
+	blockTextHandler: (blocks: Block[]) => void;
 }
 // Our <Editor> component we can reuse later
-export default function Editor({ initialContent, editable }: EditorProps) {
+export default function Editor({
+	initialContent,
+	editable,
+	blockTextHandler,
+}: EditorProps) {
 	const { resolvedTheme } = useTheme();
 	// Creates a new editor instance.
-	const [blocks, setBlocks] = useState<Block[]>([]);
 
 	const editor: BlockNoteEditor = useCreateBlockNote({
 		initialContent: initialContent
@@ -37,7 +41,7 @@ export default function Editor({ initialContent, editable }: EditorProps) {
 				editable={editable}
 				theme={resolvedTheme === "dark" ? "dark" : "light"}
 				onChange={() => {
-					setBlocks(editor.document);
+					blockTextHandler(editor.document);
 				}}
 			/>
 		</div>

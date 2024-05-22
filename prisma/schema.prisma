@@ -27,12 +27,12 @@ model User {
 model Posts {
   id          String @id @default(uuid())
   title       String
-  description String
+  description String?
+  elements    String?
   publisehed  Boolean
-  postedOn    String
+  postedOn    DateTime  @default(now()) 
   authorId    String 
   author      User @relation(fields: [authorId], references: [id])
-
 }
 
 model Follows {

@@ -25,7 +25,7 @@ const Editor = dynamic(() => import("../../../components/BlockNoteEditor"), {
 });
 
 // Test content
-const content = `[{"id":"bb35dd4b56-0e15-4552-b35e-ed19c2dfa402","type":"paragraph","props":{"textColor":"default","backgroundColor":"default","textAlignment":"left"},"content":[{"type":"text","text":"Welcome to this demo!","styles":{}}],"children":[]},{"id":"992b9c80-1d82-44d1-b55a-dba3b5309d4b","type":"heading","props":{"textColor":"default","backgroundColor":"default","textAlignment":"left","level":1},"content":[{"type":"text","text":"This is a heading block","styles":{}}],"children":[]},{"id":"cf0a94a8-238f-4fdd-ae27-ea6871135d8a","type":"paragraph","props":{"textColor":"default","backgroundColor":"default","textAlignment":"left"},"content":[{"type":"text","text":"This is a paragraph block","styles":{}}],"children":[]},{"id":"7095c5b1-b21f-490c-a717-d291410c1e23","type":"paragraph","props":{"textColor":"default","backgroundColor":"default","textAlignment":"left"},"content":[{"type":"text","text":"how are you doing","styles":{}}],"children":[]},{"id":"ae4f6ebe-e77d-4708-b478-7ea949abd900","type":"paragraph","props":{"textColor":"default","backgroundColor":"default","textAlignment":"left"},"content":[{"type":"text","text":"how are you mate","styles":{}}],"children":[]},{"id":"dd335f8b-e987-4491-8cf3-60c0094ccbbb","type":"heading","props":{"textColor":"default","backgroundColor":"default","textAlignment":"left","level":1},"content":[{"type":"text","text":"is there anything I can help you with? ","styles":{}}],"children":[]},{"id":"4f8cd74b-1fdc-4002-8ac1-146c7ed51efb","type":"heading","props":{"textColor":"default","backgroundColor":"default","textAlignment":"left","level":2},"content":[{"type":"text","text":"holac","styles":{}}],"children":[]},{"id":"44669736-b094-4702-9920-136c52c7770c","type":"paragraph","props":{"textColor":"default","backgroundColor":"default","textAlignment":"left"},"content":[],"children":[]}]`;
+
 export default function Page() {
 	const [title, setTitle] = useState("");
 	const [blocksText, setBlocksText] = useState<Block[]>([]);
@@ -49,13 +49,17 @@ export default function Page() {
 			tags: Yup.string().optional(),
 		}),
 		onSubmit: async () => {
-			console.log(formik.values);
-			const data = {
-				title,
-				elements: formik.values,
-				description: blocksText,
-			};
-			const res = await axios.post("/api/post", data);
+			if (title === "") {
+				alert("Title required");
+			} else {
+				console.log(formik.values);
+				const data = {
+					title,
+					elements: formik.values,
+					description: blocksText,
+				};
+				const res = await axios.post("/api/post", data);
+			}
 		},
 	});
 	return (
@@ -69,6 +73,7 @@ export default function Page() {
 					id="title"
 					name="title"
 					placeholder="Undefined"
+					required
 					onChange={(e) => {
 						setTitle(e.target.value);
 					}}
@@ -188,13 +193,17 @@ export default function Page() {
 							/>
 						</div>
 					</div>
-					<div className="border rounded-lg my-10 pt-3 dark:pt-0">
-						<Editor
-							initialContent={content}
-							blockTextHandler={setBlocksText}
-						/>
+					<div>
+						<div className="mt-3">Notes:</div>
+						<div className="border rounded-lg ">
+							<Editor blockTextHandler={setBlocksText} />
+						</div>
 					</div>
-					<Button type="submit">Submit</Button>
+					<Button
+						type="submit"
+						className="my-10">
+						Add
+					</Button>
 				</form>
 			</div>
 		</div>

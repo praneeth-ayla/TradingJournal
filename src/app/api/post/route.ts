@@ -10,6 +10,7 @@ const bodySchema = z.object({
 	published: z.boolean().optional(),
 	title: z.string(),
 	description: z.string().optional(),
+	note: z.string().optional(),
 });
 export async function GET(request: NextRequest) {
 	const url = new URL(request.url);
@@ -65,15 +66,27 @@ export async function POST(request: NextRequest) {
 	// @ts-ignore
 	const authorId = userDetails?.user?.id;
 	const elements = JSON.stringify(body.elements);
-	const description = JSON.stringify(body.description);
+	const note = JSON.stringify(body.note);
+	console.log(
+		"==============================================================="
+	);
+	console.log("notest", body);
+	console.log(
+		"==============================================================="
+	);
+	console.log(note);
+
+	console.log(
+		"==============================================================="
+	);
 	const data = {
 		title: body.title,
-		description,
+		description: body.description,
 		elements,
 		published: true,
 		authorId,
+		note,
 	};
-	const date = new Date().toISOString();
 	const res = await db.posts.create({
 		data: {
 			title: data.title,
@@ -81,6 +94,7 @@ export async function POST(request: NextRequest) {
 			publisehed: data.published,
 			elements: data.elements,
 			authorId: data.authorId,
+			note: data.note,
 		},
 	});
 	return NextResponse.json({ message: "Post added successfully", post: res });
@@ -92,13 +106,14 @@ export async function PUT(request: NextRequest) {
 	// @ts-ignore
 	const authorId = userDetails?.user?.id;
 	const elements = JSON.stringify(body.elements);
-	const description = JSON.stringify(body.description);
+	const note = JSON.stringify(body.notes);
 	const data = {
 		title: body.title,
-		description,
+		description: body.description,
 		elements,
 		published: true,
 		authorId,
+		note: note,
 	};
 	const date = new Date().toISOString();
 	try {
@@ -110,6 +125,7 @@ export async function PUT(request: NextRequest) {
 				publisehed: data.published,
 				elements: data.elements,
 				authorId: data.authorId,
+				note: data.note,
 			},
 		});
 		return NextResponse.json({ message: "Post Updated" });

@@ -28,6 +28,7 @@ const Editor = dynamic(() => import("../../../components/BlockNoteEditor"), {
 
 export default function Page() {
 	const [title, setTitle] = useState("");
+	const [description, setDesciption] = useState("");
 	const [blocksText, setBlocksText] = useState<Block[]>([]);
 	const formik = useFormik({
 		initialValues: {
@@ -56,7 +57,8 @@ export default function Page() {
 				const data = {
 					title,
 					elements: formik.values,
-					description: blocksText,
+					note: blocksText,
+					description,
 				};
 				const res = await axios.post("/api/post", data);
 			}
@@ -78,6 +80,17 @@ export default function Page() {
 						setTitle(e.target.value);
 					}}
 				/>
+
+				<Textarea
+					className="h-20 text-xl pb-3  mb-5 resize-none"
+					id="description"
+					name="description"
+					placeholder="Post Description"
+					onChange={(e) => {
+						setDesciption(e.target.value);
+					}}
+				/>
+
 				<form onSubmit={formik.handleSubmit}>
 					<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
 						<div className="grid w-full max-w-sm items-center gap-1.5">

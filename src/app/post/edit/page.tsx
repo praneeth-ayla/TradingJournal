@@ -27,12 +27,13 @@ const Editor = dynamic(() => import("../../../components/BlockNoteEditor"), {
 
 export default function Page() {
 	const param = useSearchParams();
-	const postId = param.get("view");
+	const postId = param.get("postId");
 
 	const [loading, setLoading] = useState(true);
 	const [title, setTitle] = useState("");
 	const [blocksText, setBlocksText] = useState<Block[]>([]);
-	const [description, setDescription] = useState();
+	const [description, setDescription] = useState("");
+	const [notes, setNotes] = useState();
 
 	const [data, setData] = useState<any>();
 	const [errMsg, setErrorMsg] = useState("");
@@ -40,14 +41,14 @@ export default function Page() {
 	useEffect(() => {
 		async function getPost(id: string) {
 			try {
-				const res = await axios.get("/api/post?postId=" + postId);
+				const res = await axios.get("/api/post?postId=" + id);
 				if (res.data.data) {
 					setTitle(res.data.data.title);
-					const jsonDescription = JSON.parse(
-						res.data.data.description
-					);
+					const jsonNotes = JSON.parse(res.data.data.note);
+					setNotes(res.data.data.note);
+					console.log(res.data.data.description);
 					setDescription(res.data.data.description);
-					setBlocksText(jsonDescription);
+					setBlocksText(jsonNotes);
 					const jsonData = JSON.parse(res.data.data.elements);
 					setData(jsonData);
 					setLoading(false);
@@ -107,7 +108,8 @@ export default function Page() {
 			const data = {
 				title,
 				elements: formik.values,
-				description: blocksText,
+				notes: blocksText,
+				description,
 				id: postId,
 			};
 			const res = await axios.put("/api/post", data);
@@ -137,7 +139,17 @@ export default function Page() {
 										setTitle(e.target.value);
 									}}
 									maxLength={70}
-								/>
+								/>{" "}
+								<Textarea
+									className="h-20 text-xl pb-3  mb-5 resize-none"
+									id="description"
+									name="description"
+									placeholder="Post Description"
+									value={description}
+									onChange={(e) => {
+										setDescription(e.target.value);
+									}}
+								/>{" "}
 								<form onSubmit={formik.handleSubmit}>
 									<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
 										<div className="grid w-full max-w-sm items-center gap-1.5">
@@ -277,7 +289,7 @@ export default function Page() {
 										<div className="mt-3">Notes:</div>
 										<div className="border rounded-lg">
 											<Editor
-												initialContent={description}
+												initialContent={notes}
 												blockTextHandler={setBlocksText}
 											/>
 										</div>

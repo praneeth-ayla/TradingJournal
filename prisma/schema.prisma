@@ -28,7 +28,8 @@ model User {
 model Posts {
   id          String @id @default(uuid())
   title       String
-  description String?
+  description String
+  note        String?
   elements    String?
   publisehed  Boolean
   postedOn    DateTime  @default(now()) 

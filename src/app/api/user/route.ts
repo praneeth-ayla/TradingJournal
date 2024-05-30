@@ -16,6 +16,32 @@ export async function GET(request: NextRequest) {
 				where: {
 					id: userId,
 				},
+				include: {
+					followers: {
+						where: { requestAcc: true },
+						include: {
+							follower: {
+								select: {
+									id: true,
+									name: true,
+									image: true,
+								},
+							},
+						},
+					},
+					following: {
+						where: { requestAcc: true },
+						include: {
+							following: {
+								select: {
+									id: true,
+									name: true,
+									image: true,
+								},
+							},
+						},
+					},
+				},
 			});
 
 			if (userData) {

@@ -67,18 +67,7 @@ export async function POST(request: NextRequest) {
 	const authorId = userDetails?.user?.id;
 	const elements = JSON.stringify(body.elements);
 	const note = JSON.stringify(body.note);
-	console.log(
-		"==============================================================="
-	);
-	console.log("notest", body);
-	console.log(
-		"==============================================================="
-	);
-	console.log(note);
 
-	console.log(
-		"==============================================================="
-	);
 	const data = {
 		title: body.title,
 		description: body.description,
@@ -130,7 +119,6 @@ export async function PUT(request: NextRequest) {
 		});
 		return NextResponse.json({ message: "Post Updated" });
 	} catch (error: any) {
-		console.log(error);
 		if (error.code === "P2025") {
 			return NextResponse.json(
 				{

@@ -17,6 +17,8 @@ model User {
   email       String @unique
   name        String
   image       String?
+  about       String?
+  userDescription String?
   publicAcc   Boolean @default(true)
   posts       Posts[]  
   followers Follows[] @relation("following")

@@ -64,8 +64,6 @@ export async function PUT(request: NextRequest) {
 	// @ts-ignore
 	const userId = userDetails?.user?.id;
 
-	console.log(requestType, "type");
-
 	if (followerId) {
 		// Deleting Follow request
 		if (requestType === "delete") {

@@ -33,7 +33,7 @@ export default function Page() {
 	const [title, setTitle] = useState("");
 	const [blocksText, setBlocksText] = useState<Block[]>([]);
 	const [description, setDescription] = useState("");
-	const [notes, setNotes] = useState();
+	const [notes, setNotes] = useState("");
 
 	const [data, setData] = useState<any>();
 	const [errMsg, setErrorMsg] = useState("");
@@ -46,7 +46,6 @@ export default function Page() {
 					setTitle(res.data.data.title);
 					const jsonNotes = JSON.parse(res.data.data.note);
 					setNotes(res.data.data.note);
-					console.log(res.data.data.description);
 					setDescription(res.data.data.description);
 					setBlocksText(jsonNotes);
 					const jsonData = JSON.parse(res.data.data.elements);
@@ -121,8 +120,8 @@ export default function Page() {
 							<div className=" w-11/12 md:w-3/4 lg:w-2/3 pt-10">
 								<Textarea
 									readOnly
-									className="h-20 text-5xl font-bold pb-3  mb-5 resize-none"
 									id="title"
+									className="h-25 text-3xl md:text-4xl lg:text-5xl font-bold pb-3  mb-5 resize-none"
 									name="title"
 									placeholder="Undefined"
 									value={title}
@@ -132,7 +131,7 @@ export default function Page() {
 								/>
 								<Textarea
 									readOnly
-									className="h-20 text-xl pb-3  mb-5 resize-none"
+									className="h-25 text-l pb-3 md:text-xl h-32  mb-5 resize-none"
 									id="description"
 									name="description"
 									placeholder="Post Description"
@@ -284,14 +283,24 @@ export default function Page() {
 										</div>
 									</div>
 									<div>
-										<div className="mt-3">Notes:</div>
-										<div className="border rounded-lg pt-3 mb-5 dark:pt-0">
-											<Editor
-												initialContent={notes}
-												editable={false}
-												blockTextHandler={setBlocksText}
-											/>
-										</div>
+										{notes && notes.length > 2 ? (
+											<div>
+												<div className="mt-3">
+													Notes:
+												</div>
+												<div className="border rounded-lg">
+													<Editor
+														editable={false}
+														initialContent={notes}
+														blockTextHandler={
+															setBlocksText
+														}
+													/>
+												</div>
+											</div>
+										) : (
+											<></>
+										)}
 									</div>
 								</form>
 							</div>

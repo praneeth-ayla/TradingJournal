@@ -53,7 +53,6 @@ export default function Page() {
 			if (title === "") {
 				alert("Title required");
 			} else {
-				console.log(formik.values);
 				const data = {
 					title,
 					elements: formik.values,
@@ -71,7 +70,7 @@ export default function Page() {
 					Add a trade
 				</div>
 				<Textarea
-					className="h-20 text-5xl font-bold pb-3  mb-5 resize-none"
+					className="h-25 text-3xl md:text-4xl lg:text-5xl font-bold pb-3  mb-5 resize-none"
 					id="title"
 					name="title"
 					placeholder="Undefined"
@@ -79,16 +78,18 @@ export default function Page() {
 					onChange={(e) => {
 						setTitle(e.target.value);
 					}}
+					maxLength={50}
 				/>
 
 				<Textarea
-					className="h-20 text-xl pb-3  mb-5 resize-none"
+					className="h-25 text-l pb-3 md:text-xl h-32  mb-5 resize-none"
 					id="description"
 					name="description"
 					placeholder="Post Description"
 					onChange={(e) => {
 						setDesciption(e.target.value);
 					}}
+					maxLength={200}
 				/>
 
 				<form onSubmit={formik.handleSubmit}>

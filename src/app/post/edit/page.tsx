@@ -33,7 +33,7 @@ export default function Page() {
 	const [title, setTitle] = useState("");
 	const [blocksText, setBlocksText] = useState<Block[]>([]);
 	const [description, setDescription] = useState("");
-	const [notes, setNotes] = useState();
+	const [notes, setNotes] = useState("");
 
 	const [data, setData] = useState<any>();
 	const [errMsg, setErrorMsg] = useState("");
@@ -46,7 +46,6 @@ export default function Page() {
 					setTitle(res.data.data.title);
 					const jsonNotes = JSON.parse(res.data.data.note);
 					setNotes(res.data.data.note);
-					console.log(res.data.data.description);
 					setDescription(res.data.data.description);
 					setBlocksText(jsonNotes);
 					const jsonData = JSON.parse(res.data.data.elements);
@@ -130,7 +129,7 @@ export default function Page() {
 									Add a trade
 								</div>
 								<Textarea
-									className=" text-5xl font-bold pb-3 overflow-hidden whitespace-normal mb-5 resize-none"
+									className="h-25 text-3xl md:text-4xl lg:text-5xl font-bold pb-3  mb-5 resize-none"
 									id="title"
 									name="title"
 									placeholder="Undefined"
@@ -138,10 +137,10 @@ export default function Page() {
 									onChange={(e) => {
 										setTitle(e.target.value);
 									}}
-									maxLength={70}
+									maxLength={50}
 								/>{" "}
 								<Textarea
-									className="h-20 text-xl pb-3  mb-5 resize-none"
+									className="h-25 text-l pb-3 md:text-xl h-32  mb-5 resize-none"
 									id="description"
 									name="description"
 									placeholder="Post Description"
@@ -286,12 +285,39 @@ export default function Page() {
 										</div>
 									</div>
 									<div>
-										<div className="mt-3">Notes:</div>
-										<div className="border rounded-lg">
-											<Editor
-												initialContent={notes}
-												blockTextHandler={setBlocksText}
-											/>
+										<div>
+											{notes && notes.length > 2 ? (
+												<div>
+													<div className="mt-3">
+														Notes:
+													</div>
+													<div className="border rounded-lg">
+														<Editor
+															editable={true}
+															initialContent={
+																notes
+															}
+															blockTextHandler={
+																setBlocksText
+															}
+														/>
+													</div>
+												</div>
+											) : (
+												<div>
+													<div className="mt-3">
+														Notes:
+													</div>
+													<div className="border rounded-lg">
+														<Editor
+															editable={true}
+															blockTextHandler={
+																setBlocksText
+															}
+														/>
+													</div>
+												</div>
+											)}
 										</div>
 									</div>
 									<Button

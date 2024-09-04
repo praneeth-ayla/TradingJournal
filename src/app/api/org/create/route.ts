@@ -1,7 +1,7 @@
 import { authOptions } from "@/lib/authOptions";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
-import db from "../../../../prisma/db";
+import db from "../../../../../prisma/db";
 
 export async function POST(request: NextRequest) {
 	// Get user session
@@ -16,9 +16,7 @@ export async function POST(request: NextRequest) {
 	// Parse the request body
 	const body = await request.json();
 	const { name, description, orgLogo: imageUrl } = body.formData;
-	console.log("h adsklf jlkasddk");
 	console.log(name, description, imageUrl);
-	console.log("h adsklf jlkasddk");
 
 	// Basic validation
 	if (!name || !description || !imageUrl) {

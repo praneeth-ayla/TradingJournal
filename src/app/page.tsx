@@ -2,10 +2,10 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { ModeToggle } from "@/components/ui/toggle-mode";
 import Link from "next/link";
 import React, { useEffect } from "react";
 import useGetOrg from "@/components/hooks/useGetOrg";
+import { Loader } from "lucide-react";
 
 export default function VerifiedPage() {
 	const { data: session, status } = useSession();
@@ -22,11 +22,26 @@ export default function VerifiedPage() {
 		console.log(session);
 	}, [status, session]);
 
+	if (loading) {
+		return (
+			<div className="h-screen flex justify-center items-center">
+				<Loader />
+			</div>
+		);
+	}
+	if (error) {
+		router.push("/verify");
+		return (
+			<div className="h-screen flex justify-center items-center">
+				{error}
+			</div>
+		);
+	}
 	return (
 		<div>
 			{/* Page content for verified users */}
 			<h1 className="text-5xl font-extrabold text-center ">
-				Organisation: {!loading && org.name}
+				Organization: {!loading && org.name}
 			</h1>
 			<div className="text-center h-[40vh] flex justify-center items-center gap-10">
 				<Button

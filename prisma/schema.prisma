@@ -13,8 +13,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-
 model Organization {
   id          String      @id @default(uuid())
   name        String
@@ -22,6 +20,7 @@ model Organization {
   imageUrl    String
   adminId     String     @unique // Ensure that each Admin is linked to only one Organization
   admin       Admin      @relation(fields: [adminId], references: [id])
+  roles       Role[]     // One-to-many relation with Role
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
 }
@@ -33,4 +32,19 @@ model Admin {
   image       String?
   verified    Boolean     @default(false)
   organization Organization? // Make this optional since an Admin may not always have an organization
+}
+
+model Role {
+  id          String      @id @default(uuid())
+  name        String
+  description String
+  skills      String[]
+  experience  Int?        // Nullable experience
+  cgpa        Float?      // Nullable CGPA
+  atsScore    Int?        // Nullable ATS score
+  gap         String?     // Nullable gap
+  organizationId String
+  organization Organization @relation(fields: [organizationId], references: [id])
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 }

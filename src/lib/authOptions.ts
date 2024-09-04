@@ -26,7 +26,7 @@ export const authOptions: NextAuthOptions = {
 		async session({ session }) {
 			// Adding the user id, name and image from db to the session to access in client side
 			if (session.user?.email) {
-				const sessionUser = await db.user.findFirst({
+				const sessionUser = await db.admin.findFirst({
 					where: {
 						email: session.user.email,
 					},
@@ -54,11 +54,11 @@ export const authOptions: NextAuthOptions = {
 
 			// Creating an entry in users table when login for first time.
 			try {
-				const userExists = await db.user.findFirst({
+				const userExists = await db.admin.findFirst({
 					where: { email: profile?.email },
 				});
 				if (!userExists) {
-					await db.user.create({
+					await db.admin.create({
 						data: {
 							email: profile?.email,
 							name: profile?.name,

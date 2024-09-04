@@ -4,11 +4,12 @@ import "./globals.css";
 import SessionWrapper from "@/components/SessionWrapper";
 import { ThemeProvider } from "next-themes";
 import Navbar from "../components/Navbar";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-	title: "TheTJ",
+	title: "Org - Kaizen.ai",
 };
 
 export default function RootLayout({
@@ -22,8 +23,11 @@ export default function RootLayout({
 				<ThemeProvider
 					attribute="class"
 					defaultTheme="system">
-					<Navbar></Navbar>
-					<SessionWrapper>{children}</SessionWrapper>
+					<Navbar />
+					<SessionWrapper>
+						{children}
+						<Toaster />
+					</SessionWrapper>
 				</ThemeProvider>
 			</body>
 		</html>

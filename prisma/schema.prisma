@@ -12,39 +12,25 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-model User {
-  id          String @id @default(uuid())
-  email       String @unique
+
+
+
+model Organization {
+  id          String      @id @default(uuid())
   name        String
-  image       String?
-  about       String?
-  userDescription String?
-  publicAcc   Boolean @default(true)
-  posts       Posts[]  
-  followers Follows[] @relation("following")
-  following Follows[] @relation("follower")
-  }
-
-
-
-model Posts {
-  id          String @id @default(uuid())
-  title       String
   description String
-  note        String?
-  elements    String?
-  publisehed  Boolean
-  postedOn    DateTime  @default(now()) 
-  authorId    String 
-  author      User @relation(fields: [authorId], references: [id])
+  imageUrl    String
+  adminId     String     @unique // Ensure that each Admin is linked to only one Organization
+  admin       Admin      @relation(fields: [adminId], references: [id])
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 }
 
-model Follows {
-  followerId  String
-  followingId String
-  requestAcc  Boolean @default(false)
-  follower    User @relation("follower", fields: [followerId], references: [id])
-  following   User @relation("following", fields: [followingId], references: [id])
-
-  @@id([followerId, followingId])
+model Admin {
+  id          String      @id @default(uuid())
+  email       String      @unique
+  name        String?
+  image       String?
+  verified    Boolean     @default(false)
+  organization Organization? // Make this optional since an Admin may not always have an organization
 }
